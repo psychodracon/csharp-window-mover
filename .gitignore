@@ -1,0 +1,7 @@
+/.svn
+/.vs
+/Ninjacrab.PersistentWindows.Common/bin
+/Ninjacrab.PersistentWindows.Common/obj
+/packages
+/WindowMover/bin
+/WindowMover/obj
