@@ -1,0 +1,15 @@
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMoverWPF.exe.config
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMoverWPF.exe
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMoverWPF.pdb
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csprojAssemblyReference.cache
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\MainWindow.g.cs
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\App.g.cs
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF_MarkupCompile.cache
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF_MarkupCompile.lref
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\MainWindow.baml
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.g.resources
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.Properties.Resources.resources
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csproj.GenerateResource.cache
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csproj.CoreCompileInputs.cache
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.exe
+D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.pdb
