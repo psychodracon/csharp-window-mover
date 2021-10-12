@@ -22,14 +22,16 @@
             </Setter>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="#acb7c9"/>
         </Style.Setters>
 
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
-                <Setter Property="Background" Value="#3e3959"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
             </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#585280"/>
+                <Setter Property="Background" Value="#30394a"/>
+                <Setter Property="Foreground" Value="#ffffff"/>
             </Trigger>
         </Style.Triggers>
     </Style>

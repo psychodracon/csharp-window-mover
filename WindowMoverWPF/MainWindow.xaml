@@ -6,15 +6,13 @@
         xmlns:local="clr-namespace:WindowMoverWPF"
         xmlns:viewModel="clr-namespace:WindowMoverWPF.Data.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        WindowStyle="None"
-        ResizeMode="NoResize">
+        Title="MainWindow" Height="450" Width="800">
 
     <Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>
-    
-    <Grid Background="#272438">
+
+    <Grid Background="#edf2f6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition/>
@@ -25,6 +23,10 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <StackPanel Grid.Row="0" Background="#354052">
+            
+        </StackPanel>
+
         <TextBlock Text="Window Mover" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center"
@@ -32,17 +34,15 @@
                    FontSize="22"
                    />
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Background="#354052">
             <RadioButton Content="Anchors"
                          Height="50"
-                         Foreground="White"
                          FontSize="14"
                          IsChecked="true"
                          Style="{StaticResource MenuButtonTheme}"
                          Command="{Binding AnchorsViewCommand}"/>
             <RadioButton Content="Options"
                          Height="50"
-                         Foreground="White"
                          FontSize="14"
                          Style="{StaticResource MenuButtonTheme}"
                          Command="{Binding SettingsViewCommand}"/>
@@ -50,7 +50,7 @@
 
         <ContentControl Grid.Row="1"
                         Grid.Column="1"
-                        Margin="5"
+                        Margin="10"
                         Content="{Binding CurrentView}"
                         />
     </Grid>

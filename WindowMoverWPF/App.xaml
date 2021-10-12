@@ -4,10 +4,13 @@
              xmlns:local="clr-namespace:WindowMoverWPF"
              xmlns:view="clr-namespace:WindowMoverWPF.Data.View"
              xmlns:viewModel="clr-namespace:WindowMoverWPF.Data.ViewModel"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             xmlns:ui="http://schemas.modernwpf.com/2019">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ui:ThemeResources />
+                <ui:XamlControlsResources />
                 <ResourceDictionary Source="Themes/MenuButtonTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             

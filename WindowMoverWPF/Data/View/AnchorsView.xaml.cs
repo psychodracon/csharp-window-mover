@@ -24,5 +24,10 @@ namespace WindowMoverWPF.Data.View
         {
             InitializeComponent();
         }
+
+        private void ListView_TargetUpdated(object sender, DataTransferEventArgs e)
+        {
+
+        }
     }
 }
