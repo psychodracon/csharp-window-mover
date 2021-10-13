@@ -12,24 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WindowMoverWPF.Data.ViewModel;
 
 namespace WindowMoverWPF.Data.View
 {
     /// <summary>
-    /// Interaction logic for AnchorsView.xaml
+    /// Interaction logic for AnchorEditorView.xaml
     /// </summary>
-    public partial class AnchorsView : UserControl
+    public partial class AnchorEditorView : UserControl
     {
-        public AnchorsView()
+        public AnchorEditorView()
         {
             InitializeComponent();
-        }
-
-        private void ListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            AnchorsViewModel viewModel = (AnchorsViewModel)this.DataContext;
-            viewModel.AnchorsViewCommand.Execute(sender);
         }
     }
 }
