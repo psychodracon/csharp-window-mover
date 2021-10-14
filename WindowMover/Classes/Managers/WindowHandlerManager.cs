@@ -173,5 +173,10 @@ namespace WindowMover.Classes.Managers
                 }
             }
         }
+
+        public static void SetPosition(Window window)
+        {
+
+        }
     }
 }

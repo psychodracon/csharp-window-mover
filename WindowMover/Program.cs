@@ -20,9 +20,6 @@ namespace WindowMover
 #if DEBUG
                 AllocConsole();
 #endif
-                //PersistentWindowProcessor pwp = new PersistentWindowProcessor();
-                //pwp.Start();
-
                 processIcon.Display();
                 Application.Run();
             }

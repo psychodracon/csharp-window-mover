@@ -20,18 +20,7 @@ namespace WindowMover.Forms
             InitializeComponent();
             
             this.nudSetPositions.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "TimerSetPositionTimeout", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.nudFullScreen.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "TimerFullscreenDetectionTimeout", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkWorkMode.DataBindings.Add(new System.Windows.Forms.Binding("Checked", Settings.Instance, "WorkModeAffectsPositioning", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-
-            this.tbBrightnessDay.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "DayMonitorBrightness", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbContrastDay.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "DayMonitorContrast", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbBrightnessNight.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "NightMonitorBrightness", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.tbContrastNight.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "NightMonitorContrast", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-
-            this.nudBrightnessOffset.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "BrightnessOffset", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.nudContrastOffset.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "ContrastOffset", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkOffset.DataBindings.Add(new System.Windows.Forms.Binding("Checked", Settings.Instance, "UseOffsetForFirstMonitor", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-
+            this.chkUseTimer.DataBindings.Add(new System.Windows.Forms.Binding("Checked", Settings.Instance, "UseTimerToSetPositions", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Location = Settings.Instance.WindowSettingsLocation;
             this.Size = Settings.Instance.WindowSettingsSize;
 
@@ -46,12 +35,7 @@ namespace WindowMover.Forms
             dgVHandlers.AllowUserToOrderColumns = false;
 
             dgVHandlers.Columns["clActive"].DataPropertyName = "handlerActive";
-            //dgVHandlers.Columns["clActive"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgVHandlers.Columns["clName"].DataPropertyName = "handlerName";
-            //dgVHandlers.Columns["clName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-            nudBrightnessOffset.Minimum = -100;
-            nudContrastOffset.Minimum = -100;
         }
         
         private void SettingsForm_Shown(object sender, EventArgs e)
@@ -147,26 +131,6 @@ namespace WindowMover.Forms
         private void dgVHandlers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
             WindowHandlerManager.Save();
-        }
-  
-        private void tbBrightnessDay_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblBrightnessValueDay.Text = (sender as TrackBar).Value.ToString();
-        }
-
-        private void tbContrastDay_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblContrastValueDay.Text = (sender as TrackBar).Value.ToString();
-        }
-
-        private void tbBrightnessNight_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblBrightnessValueNight.Text = (sender as TrackBar).Value.ToString();
-        }
-
-        private void tbContrastNight_ValueChanged(object sender, EventArgs e)
-        {
-            this.lblContrastValueNight.Text = (sender as TrackBar).Value.ToString();
         }
     }
 }

@@ -28,40 +28,8 @@ namespace WindowMover.Classes.Managers
             {
                 if (hWnd == shellWindow) return true;
                 if (!WinApiWrapper.IsWindowVisible(hWnd)) return true;
-                Window window = new Window();
 
-                window.windowHandle = hWnd;
-                window.windowCaption = GetCaptionOfWindow(hWnd);
-                window.windowClass = GetClassNameOfWindow(hWnd);
-                window.processName = GetProcessPathOfWindow(hWnd);
-
-                Rectangle rectangle = GetWindowRect(hWnd);
-
-                window.positionX = rectangle.X;
-                window.positionY = rectangle.Y;
-                window.sizeX = rectangle.Width;
-                window.sizeY = rectangle.Height;
-
-                HWND hWndParent = WinApiWrapper.GetParent(hWnd);
-                if (hWndParent != HWND.Zero)
-                {
-                    Window parentWindow = new Window();
-
-                    parentWindow.windowHandle = hWndParent;
-                    parentWindow.windowCaption = GetCaptionOfWindow(hWndParent);
-                    parentWindow.windowClass = GetClassNameOfWindow(hWndParent);
-                    parentWindow.processName = GetProcessPathOfWindow(hWndParent);
-
-                    Rectangle parentRectangle = GetWindowRect(hWndParent);
-
-                    parentWindow.positionX = rectangle.X;
-                    parentWindow.positionY = rectangle.Y;
-                    parentWindow.sizeX = rectangle.Width;
-                    parentWindow.sizeY = rectangle.Height;
-
-                    window.windowParent = parentWindow;
-                }
-
+                Window window = GetWindowInfo(hWnd);
                 windows.Add(window);
 
                 return true;
@@ -69,6 +37,45 @@ namespace WindowMover.Classes.Managers
             }, 0);
 
             return windows;
+        }
+
+        public static Window GetWindowInfo(HWND hWnd)
+        {
+            Window window = new Window();
+
+            window.windowHandle = hWnd;
+            window.windowCaption = GetCaptionOfWindow(hWnd);
+            window.windowClass = GetClassNameOfWindow(hWnd);
+            window.processName = GetProcessPathOfWindow(hWnd);
+
+            Rectangle rectangle = GetWindowRect(hWnd);
+
+            window.positionX = rectangle.X;
+            window.positionY = rectangle.Y;
+            window.sizeX = rectangle.Width;
+            window.sizeY = rectangle.Height;
+
+            HWND hWndParent = WinApiWrapper.GetParent(hWnd);
+            if (hWndParent != HWND.Zero)
+            {
+                Window parentWindow = new Window();
+
+                parentWindow.windowHandle = hWndParent;
+                parentWindow.windowCaption = GetCaptionOfWindow(hWndParent);
+                parentWindow.windowClass = GetClassNameOfWindow(hWndParent);
+                parentWindow.processName = GetProcessPathOfWindow(hWndParent);
+
+                Rectangle parentRectangle = GetWindowRect(hWndParent);
+
+                parentWindow.positionX = rectangle.X;
+                parentWindow.positionY = rectangle.Y;
+                parentWindow.sizeX = rectangle.Width;
+                parentWindow.sizeY = rectangle.Height;
+
+                window.windowParent = parentWindow;
+            }
+
+            return window;
         }
 
         public static string GetCaptionOfWindow(IntPtr hwnd)
