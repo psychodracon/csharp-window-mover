@@ -17,6 +17,10 @@ namespace WindowMover.Classes.Managers
     {
         private static Timer setWindowPositionTimer = new Timer();
 
+        public static void Init()
+        {
+
+        }
         public static void Mock()
         {
 
