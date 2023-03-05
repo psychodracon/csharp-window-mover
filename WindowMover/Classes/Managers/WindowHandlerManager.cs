@@ -45,7 +45,7 @@ namespace WindowMover.Classes.Managers
             string currentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             byte[] arrayToSave = Helpers.ObjectToByteArray(windowHandlers);
-            bool done = Helpers.ByteArrayToFile(String.Format("{0}\\data.dat",currentDirectory), arrayToSave);
+            bool done = Helpers.ByteArrayToFile(String.Format("{0}\\data.dat", currentDirectory), arrayToSave);
 
             return done;
         }
@@ -70,7 +70,7 @@ namespace WindowMover.Classes.Managers
             switch (windowHandler.windowTitleModifier)
             {
                 case WindowCompareTemplate.Match:
-                    if(!windowHandler.useWindowClass)
+                    if (!windowHandler.useWindowClass)
                         windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower())).ToList();
                     else
                         windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
@@ -85,7 +85,7 @@ namespace WindowMover.Classes.Managers
                     if (!windowHandler.useWindowClass)
                         windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower())).ToList();
                     else
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();                    
+                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
                     break;
                 case WindowCompareTemplate.Contains:
                     if (!windowHandler.useWindowClass)
@@ -100,7 +100,7 @@ namespace WindowMover.Classes.Managers
             if (windowHandler.useProcessName)
                 windows = windows.Where(x => x.processName.ToLower().Equals(windowHandler.processName.ToLower())).ToList();
 
-            if(windowHandler.useParent)
+            if (windowHandler.useParent)
             {
                 if (windows.Count > 0 && windows[0].windowParent != null)
                 {
@@ -153,7 +153,43 @@ namespace WindowMover.Classes.Managers
                 foreach (var window in windows)
                 {
                     Console.WriteLine(window.windowCaption);
+                    if (handler.nonTopmost)
+                    {
+                        Console.WriteLine("Active window: {0}", WinApiWrapper.GetActiveWindow());
+                        WindowManager.SetWindowPos(window, (int)WinApiWrapper.ZOrder.HWND_NOTOPMOST, (uint)WinApiWrapper.WindowSPFlags.SWP_FRAMECHANGED |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOMOVE |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOSIZE
+                            );
+                    }
+                    if (handler.alwaysOnTop)
+                    {
+                        WindowManager.SetWindowPos(window, (int)WinApiWrapper.ZOrder.HWND_TOPMOST, (uint)WinApiWrapper.WindowSPFlags.SWP_FRAMECHANGED |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOMOVE |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOSIZE
+                            );
+                    }
+                    if (handler.borderless)
+                    {
+                        long currentStyle = WindowManager.GetWindowLongPtr(window, (int)WinApiWrapper.Offset.GWL_STYLE);
+                        currentStyle &= ~((long)WinApiWrapper.WindowStyle.WS_CAPTION |
+                            (long)WinApiWrapper.WindowStyle.WS_THICKFRAME |
+                            (long)WinApiWrapper.WindowStyle.WS_MINIMIZE |
+                            (long)WinApiWrapper.WindowStyle.WS_MAXIMIZE | (long)
+                            WinApiWrapper.WindowStyle.WS_SYSMENU
+                        );
+                        WindowManager.SetWindowLongPtrA(window, (int)WinApiWrapper.Offset.GWL_STYLE, currentStyle);
 
+                        long currentExtStyle = WindowManager.GetWindowLongPtr(window, (int)WinApiWrapper.Offset.GWL_EXSTYLE);
+                        currentExtStyle &= ~((long)WinApiWrapper.WindowExtStyle.WS_EX_DLGMODALFRAME | (long)WinApiWrapper.WindowExtStyle.WS_EX_CLIENTEDGE | (long)WinApiWrapper.WindowExtStyle.WS_EX_STATICEDGE);
+                        WindowManager.SetWindowLongPtrA(window, (int)WinApiWrapper.Offset.GWL_EXSTYLE, currentExtStyle);
+
+                        WindowManager.SetWindowPos(window, 0, (uint)WinApiWrapper.WindowSPFlags.SWP_FRAMECHANGED |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOMOVE |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOSIZE |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOZORDER |
+                            (uint)WinApiWrapper.WindowSPFlags.SWP_NOOWNERZORDER
+                            );
+                    }
                     if (!handler.changePosition && !handler.changeSize)
                     {
                         return;
@@ -162,11 +198,11 @@ namespace WindowMover.Classes.Managers
                     {
                         WindowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, window.sizeX, window.sizeY, true);
                     }
-                    else if(!handler.changePosition && handler.changeSize)
+                    else if (!handler.changePosition && handler.changeSize)
                     {
                         WindowManager.MoveWindowByWindowClass(window, window.positionX, window.positionY, handler.sizeX, handler.sizeY, true);
                     }
-                    else if(handler.changePosition && handler.changeSize)
+                    else if (handler.changePosition && handler.changeSize)
                     {
                         WindowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, handler.sizeX, handler.sizeY, true);
                     }

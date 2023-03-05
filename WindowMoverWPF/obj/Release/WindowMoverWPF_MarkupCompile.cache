@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Release\
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\
 WindowMoverWPF
 none
 false
 TRACE
-D:\Mini Projects\csharp-window-mover\WindowMoverWPF\App.xaml
-41224685390
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\App.xaml
+6-40033754
 
-13-930652745
-69-1320261687
-Data\View\AnchorsView.xaml;Data\View\SettingsView.xaml;MainWindow.xaml;Themes\MenuButtonTheme.xaml;
+151729214476
+12137823683
+AnchorEditorWindow.xaml;Data\View\AnchorEditorView.xaml;Data\View\AnchorsView.xaml;Data\View\SettingsView.xaml;MainWindow.xaml;Themes\MenuButtonTheme.xaml;
 
-True
+False
 

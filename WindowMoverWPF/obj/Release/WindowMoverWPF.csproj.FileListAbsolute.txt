@@ -19,7 +19,6 @@ C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMoverWPF.ex
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMoverWPF.pdb
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMover.exe
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMover.pdb
-C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csprojAssemblyReference.cache
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\Data\View\AnchorsView.g.cs
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\Data\View\SettingsView.g.cs
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\MainWindow.g.cs
@@ -39,3 +38,12 @@ C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.cs
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csproj.CopyComplete
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.exe
 C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.pdb
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\System.ValueTuple.dll
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\WindowMover.exe.config
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\bin\Release\System.ValueTuple.xml
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csproj.AssemblyReference.cache
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\WindowMoverWPF.csproj.SuggestedBindingRedirects.cache
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\AnchorEditorWindow.g.cs
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\Data\View\AnchorEditorView.g.cs
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\AnchorEditorWindow.baml
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Release\Data\View\AnchorEditorView.baml

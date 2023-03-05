@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\Mini Projects\csharp-window-mover\WindowMoverWPF\obj\Debug\
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\obj\Debug\
 WindowMoverWPF
 none
 false
 DEBUG;TRACE
-D:\Mini Projects\csharp-window-mover\WindowMoverWPF\App.xaml
-6-260162282
+C:\Repozytorium\csharp-window-mover\WindowMoverWPF\App.xaml
+6-40033754
 
-16-643811992
-711481597607
+16-643974699
+120-1900282735
 AnchorEditorWindow.xaml;Data\View\AnchorEditorView.xaml;Data\View\AnchorsView.xaml;Data\View\SettingsView.xaml;MainWindow.xaml;Themes\MenuButtonTheme.xaml;
 
 True

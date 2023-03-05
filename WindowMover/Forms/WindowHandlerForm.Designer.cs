@@ -62,10 +62,13 @@
             this.tbWindowTitle = new System.Windows.Forms.TextBox();
             this.lblWindowClass = new System.Windows.Forms.Label();
             this.gbValues = new System.Windows.Forms.GroupBox();
+            this.chkNonTopmost = new System.Windows.Forms.CheckBox();
+            this.chkAlwaysOnTop = new System.Windows.Forms.CheckBox();
             this.lblSizeSpacer = new System.Windows.Forms.Label();
             this.lblPositionSpacer = new System.Windows.Forms.Label();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.chkBorderless = new System.Windows.Forms.CheckBox();
             this.gbHandler.SuspendLayout();
             this.gbAttributes.SuspendLayout();
             this.gbParent.SuspendLayout();
@@ -360,6 +363,9 @@
             // 
             // gbValues
             // 
+            this.gbValues.Controls.Add(this.chkBorderless);
+            this.gbValues.Controls.Add(this.chkNonTopmost);
+            this.gbValues.Controls.Add(this.chkAlwaysOnTop);
             this.gbValues.Controls.Add(this.lblSizeSpacer);
             this.gbValues.Controls.Add(this.lblPositionSpacer);
             this.gbValues.Controls.Add(this.tbPositionX);
@@ -370,10 +376,30 @@
             this.gbValues.Controls.Add(this.chkSetSize);
             this.gbValues.Location = new System.Drawing.Point(12, 311);
             this.gbValues.Name = "gbValues";
-            this.gbValues.Size = new System.Drawing.Size(483, 76);
+            this.gbValues.Size = new System.Drawing.Size(483, 94);
             this.gbValues.TabIndex = 14;
             this.gbValues.TabStop = false;
             this.gbValues.Text = "Modyfikuj parametry okna";
+            // 
+            // chkNonTopmost
+            // 
+            this.chkNonTopmost.AutoSize = true;
+            this.chkNonTopmost.Location = new System.Drawing.Point(354, 22);
+            this.chkNonTopmost.Name = "chkNonTopmost";
+            this.chkNonTopmost.Size = new System.Drawing.Size(117, 17);
+            this.chkNonTopmost.TabIndex = 13;
+            this.chkNonTopmost.Text = "Przesuń z wierzchu";
+            this.chkNonTopmost.UseVisualStyleBackColor = true;
+            // 
+            // chkAlwaysOnTop
+            // 
+            this.chkAlwaysOnTop.AutoSize = true;
+            this.chkAlwaysOnTop.Location = new System.Drawing.Point(354, 47);
+            this.chkAlwaysOnTop.Name = "chkAlwaysOnTop";
+            this.chkAlwaysOnTop.Size = new System.Drawing.Size(123, 17);
+            this.chkAlwaysOnTop.TabIndex = 12;
+            this.chkAlwaysOnTop.Text = "Zawsze na wierzchu";
+            this.chkAlwaysOnTop.UseVisualStyleBackColor = true;
             // 
             // lblSizeSpacer
             // 
@@ -412,11 +438,21 @@
             this.imageList.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // chkBorderless
+            // 
+            this.chkBorderless.AutoSize = true;
+            this.chkBorderless.Location = new System.Drawing.Point(9, 70);
+            this.chkBorderless.Name = "chkBorderless";
+            this.chkBorderless.Size = new System.Drawing.Size(79, 17);
+            this.chkBorderless.TabIndex = 14;
+            this.chkBorderless.Text = "Usuń ramki";
+            this.chkBorderless.UseVisualStyleBackColor = true;
+            // 
             // WindowHandlerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(587, 397);
+            this.ClientSize = new System.Drawing.Size(587, 417);
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.gbValues);
             this.Controls.Add(this.gbAttributes);
@@ -424,7 +460,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(603, 436);
+            this.MaximumSize = new System.Drawing.Size(603, 456);
             this.MinimumSize = new System.Drawing.Size(603, 436);
             this.Name = "WindowHandlerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -480,5 +516,8 @@
         private System.Windows.Forms.TextBox tbProcessName;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.CheckBox chkAlwaysOnTop;
+        private System.Windows.Forms.CheckBox chkNonTopmost;
+        private System.Windows.Forms.CheckBox chkBorderless;
     }
 }

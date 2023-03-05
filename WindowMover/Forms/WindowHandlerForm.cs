@@ -94,6 +94,10 @@ namespace WindowMover.Forms
             tbSizeX.DataBindings.Add(new Binding("Text", currentItem, "sizeX"));
             tbSizeY.DataBindings.Add(new Binding("Text", currentItem, "sizeY"));
 
+            chkAlwaysOnTop.DataBindings.Add(new Binding("Checked", currentItem, "alwaysOnTop"));
+            chkNonTopmost.DataBindings.Add(new Binding("Checked", currentItem, "nonTopmost"));
+            chkBorderless.DataBindings.Add(new Binding("Checked", currentItem, "borderless"));
+
             pictureBox.MouseDown += pictureBox_MouseDown;
             pictureBox.MouseUp += pictureBox_MouseUp;
             pictureBox.MouseMove += pictureBox_MouseMove;

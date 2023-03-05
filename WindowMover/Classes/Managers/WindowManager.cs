@@ -8,7 +8,7 @@ namespace WindowMover.Classes.Managers
 {
     using System.Diagnostics;
     using System.Drawing;
-    using HWND = IntPtr;
+    using HWND = IntPtr;    
 
     public static class WindowManager
     {
@@ -147,6 +147,10 @@ namespace WindowMover.Classes.Managers
             return rect.ToRectangle();
         }
 
+        public static bool SetForegroundWindow(Window window)
+        {
+            return WinApiWrapper.SetForegroundWindow(window.windowHandle);
+        }
         public static bool MoveWindowByHandle(HWND hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             return WinApiWrapper.MoveWindow(hWnd, X, Y, nWidth, nHeight, bRepaint);
@@ -155,6 +159,21 @@ namespace WindowMover.Classes.Managers
         public static bool MoveWindowByWindowClass(Window window, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             return MoveWindowByHandle(window.windowHandle, X, Y, nWidth, nHeight, bRepaint);
-        }     
+        }   
+        
+        public static long SetWindowLongPtrA(Window window, int index, long replacementValue)
+        {
+            return WinApiWrapper.SetWindowLongPtrA(window.windowHandle, index, replacementValue);
+        }
+
+        public static long GetWindowLongPtr(Window window, int index)
+        {
+            return WinApiWrapper.GetWindowLongPtr(window.windowHandle, index);
+        }
+
+        public static bool SetWindowPos(Window window, int zOrder, uint flags)
+        {
+            return WinApiWrapper.SetWindowPos(window.windowHandle, zOrder, window.positionX, window.positionY, window.sizeX, window.sizeY, flags);
+        }
     }
 }
