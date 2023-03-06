@@ -4,13 +4,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using WinApiEnums = WindowMover.Classes.Wrappers.Enums;
 
 namespace WindowMover.Classes
 {
     using System.Drawing;
     using HWND = IntPtr;
 
-    public static class WinApiWrapper
+    public class WinApiWrapper
     {
 
         [StructLayout(LayoutKind.Sequential)]
@@ -25,14 +26,14 @@ namespace WindowMover.Classes
                 this.Y = y;
             }
 
-            public POINT(System.Drawing.Point pt) : this(pt.X, pt.Y) { }
+            public POINT(Point pt) : this(pt.X, pt.Y) { }
 
-            public static implicit operator System.Drawing.Point(POINT p)
+            public static implicit operator Point(POINT p)
             {
-                return new System.Drawing.Point(p.X, p.Y);
+                return new Point(p.X, p.Y);
             }
 
-            public static implicit operator POINT(System.Drawing.Point p)
+            public static implicit operator POINT(Point p)
             {
                 return new POINT(p.X, p.Y);
             }
@@ -49,6 +50,25 @@ namespace WindowMover.Classes
             {
                 return new Rectangle(Left, Top, Right - Left, Bottom - Top);
             }
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public class KBDLLHOOKSTRUCT
+        {
+            public uint vkCode;
+            public uint scanCode;
+            public KBDLLHOOKSTRUCTFlags flags;
+            public uint time;
+            public UIntPtr dwExtraInfo;
+        }
+
+        [Flags]
+        public enum KBDLLHOOKSTRUCTFlags : uint
+        {
+            LLKHF_EXTENDED = 0x01,
+            LLKHF_INJECTED = 0x10,
+            LLKHF_ALTDOWN = 0x20,
+            LLKHF_UP = 0x80,
         }
 
         public delegate bool EnumWindowsProc(HWND hWnd, int lParam);
@@ -127,7 +147,26 @@ namespace WindowMover.Classes
         [DllImport("USER32.DLL")]
         public static extern bool SetWindowPos(HWND hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
+        public delegate void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+
         [DllImport("USER32.DLL")]
-        public static extern IntPtr GetActiveWindow();
+        public static extern IntPtr SetWinEventHook(int eventMin, int eventMax, IntPtr hmodWinEventProc, WinEventProc lpfnWinEventProc, int idProcess, int idThread, WinApiEnums.WinEvents dwflags);
+
+        [DllImport("USER32.DLL")]
+        public static extern int UnhookWinEvent(IntPtr hWinEventHook);
+
+        [DllImport("KERNEL32.DLL")]
+        public static extern int GetLastError();
+
+        public delegate int HookProc(int code, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("USER32.DLL")]
+        public static extern IntPtr SetWindowsHookEx(int idHook, HookProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("USER32.DLL")]
+        public static extern int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("USER32.DLL")]
+        public static extern uint GetWindowModuleFileName(HWND hwnd, StringBuilder pszFileName, uint cchFileNameMax);
     }
 }

@@ -23,6 +23,8 @@ namespace WindowMover.Forms
         public EditorMode editorMode;
         private WindowMover.Classes.WindowHandler currentItem;
         private WindowMover.Classes.WindowHandler backupItem;
+        private WindowManager windowManager;
+        private WindowHandlerManager windowHandlerManager;
 
         public enum GetSystem_Metrics : int
         {
@@ -35,8 +37,11 @@ namespace WindowMover.Forms
 
         private HWND LastWindow = HWND.Zero;
 
-        public WindowHandlerForm(string header, EditorMode editorMode, WindowMover.Classes.WindowHandler item)
+        public WindowHandlerForm(WindowManager windowManager, WindowHandlerManager windowHandlerManager, string header, EditorMode editorMode, WindowMover.Classes.WindowHandler item)
         {
+            this.windowManager = windowManager;
+            this.windowHandlerManager = windowHandlerManager; 
+
             this.editorMode = editorMode;
 
             if (editorMode == EditorMode.New)
@@ -110,7 +115,7 @@ namespace WindowMover.Forms
             }
             else
             {
-                string message = Classes.Managers.WindowHandlerManager.Add(currentItem);
+                string message = windowHandlerManager.Add(currentItem);
                 if (message != String.Empty)
                     MessageBox.Show(message);
             }
@@ -125,11 +130,11 @@ namespace WindowMover.Forms
             this.Close();
         }
 
-        static void ShowInvertRectTracker(HWND window)
+        private void ShowInvertRectTracker(HWND window)
         {
             if (window != HWND.Zero)
             {
-                Rectangle WindowRect = WindowManager.GetWindowRect(window);
+                Rectangle WindowRect = windowManager.GetWindowRect(window);
                 HWND dc = WinApiWrapper.GetWindowDC(window);
 
                 GdiApiWrapper.SetROP2(dc, (int)GdiApiWrapper.RopMode.R2_NOT);
@@ -149,7 +154,7 @@ namespace WindowMover.Forms
             }
         }
 
-        static HWND ChildWindowFromPoint(Point point)
+        private HWND ChildWindowFromPoint(Point point)
         {
             HWND WindowPoint = WinApiWrapper.WindowFromPoint(point);
             if (WindowPoint == HWND.Zero)
@@ -171,7 +176,7 @@ namespace WindowMover.Forms
             ArrayList WindowList = new ArrayList();
             while (Window != HWND.Zero)
             {
-                Rectangle rect = WindowManager.GetWindowRect(Window);
+                Rectangle rect = windowManager.GetWindowRect(Window);
                 if (rect.Contains(point))
                     WindowList.Add(Window);
                 Window = WinApiWrapper.GetWindow(Window, (uint)WinApiEnums.Cmd.GW_HWNDNEXT);
@@ -180,7 +185,7 @@ namespace WindowMover.Forms
             int MinPixel = GetSystemMetrics((int)GetSystem_Metrics.SM_CXFULLSCREEN) * GetSystemMetrics((int)GetSystem_Metrics.SM_CYFULLSCREEN);
             for (int i = 0; i < WindowList.Count; ++i)
             {
-                Rectangle rect = WindowManager.GetWindowRect((IntPtr)WindowList[i]);
+                Rectangle rect = windowManager.GetWindowRect((IntPtr)WindowList[i]);
                 int ChildPixel = rect.Width * rect.Height;
                 if (ChildPixel < MinPixel)
                 {
@@ -195,15 +200,15 @@ namespace WindowMover.Forms
         {
             if (window != HWND.Zero)
             {
-                tbWindowTitle.Text = Classes.Managers.WindowManager.GetCaptionOfWindow(window);
-                tbWindowClass.Text = Classes.Managers.WindowManager.GetClassNameOfWindow(window);
-                tbProcessName.Text = Classes.Managers.WindowManager.GetProcessPathOfWindow(window);
+                tbWindowTitle.Text = windowManager.GetCaptionOfWindow(window);
+                tbWindowClass.Text = windowManager.GetClassNameOfWindow(window);
+                tbProcessName.Text = windowManager.GetProcessPathOfWindow(window);
 
-                currentItem.windowTitle = Classes.Managers.WindowManager.GetCaptionOfWindow(window);
-                currentItem.windowClass = Classes.Managers.WindowManager.GetClassNameOfWindow(window);
-                currentItem.processName = Classes.Managers.WindowManager.GetProcessPathOfWindow(window);
+                currentItem.windowTitle = windowManager.GetCaptionOfWindow(window);
+                currentItem.windowClass = windowManager.GetClassNameOfWindow(window);
+                currentItem.processName = windowManager.GetProcessPathOfWindow(window);
 
-                Rectangle rectangle = WindowManager.GetWindowRect(window);
+                Rectangle rectangle = windowManager.GetWindowRect(window);
 
                 tbPositionX.Text = rectangle.X.ToString();
                 tbPositionY.Text = rectangle.Y.ToString();
@@ -218,13 +223,13 @@ namespace WindowMover.Forms
                 HWND hWndParent = WinApiWrapper.GetParent(window);
                 if (hWndParent.ToInt64() > 0)
                 {
-                    tbParentWindowTitle.Text = Classes.Managers.WindowManager.GetCaptionOfWindow(hWndParent);
-                    tbParentWindowClass.Text = Classes.Managers.WindowManager.GetClassNameOfWindow(hWndParent);
-                    tbParentProcessName.Text = Classes.Managers.WindowManager.GetProcessPathOfWindow(hWndParent);
+                    tbParentWindowTitle.Text = windowManager.GetCaptionOfWindow(hWndParent);
+                    tbParentWindowClass.Text = windowManager.GetClassNameOfWindow(hWndParent);
+                    tbParentProcessName.Text = windowManager.GetProcessPathOfWindow(hWndParent);
 
-                    currentItem.parentWindowTitle = Classes.Managers.WindowManager.GetCaptionOfWindow(hWndParent);
-                    currentItem.parentWindowClass = Classes.Managers.WindowManager.GetClassNameOfWindow(hWndParent);
-                    currentItem.parentProcessName = Classes.Managers.WindowManager.GetProcessPathOfWindow(hWndParent);
+                    currentItem.parentWindowTitle = windowManager.GetCaptionOfWindow(hWndParent);
+                    currentItem.parentWindowClass = windowManager.GetClassNameOfWindow(hWndParent);
+                    currentItem.parentProcessName = windowManager.GetProcessPathOfWindow(hWndParent);
                 }
                 else
                 {

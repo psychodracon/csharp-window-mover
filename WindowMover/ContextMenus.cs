@@ -1,24 +1,27 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
-using WindowMover.Properties;
-using System.Drawing;
 using WindowMover.Classes;
 
 namespace WindowMover
 {
     using Classes.Managers;
-    using WindowMover.Forms;
 
     class ContextMenus
     {
+        private WindowManager windowManager;
+        private WindowHandlerManager windowHandlerManager;
+        private TimerManager timerManager;
+
         bool isAboutLoaded = false;
         bool isSettingsLoaded = false;
 
         bool isPositioningChecked = true;
 
-        public ContextMenus()
+        public ContextMenus(WindowManager windowManager, WindowHandlerManager windowHandlerManager, TimerManager timerManager)
         {
+            this.windowManager = windowManager;
+            this.windowHandlerManager = windowHandlerManager;
+            this.timerManager = timerManager;
         }
 
         private ToolStripMenuItem positioningItem;
@@ -67,11 +70,11 @@ namespace WindowMover
 
             if (isPositioningChecked)
             {
-                TimerManager.EnableSetWindowPositionTimer();
+                timerManager.EnableSetWindowPositionTimer();
             }
             if (!isPositioningChecked)
             {
-                TimerManager.DisableSetWindowPositionTimer();
+                timerManager.DisableSetWindowPositionTimer();
 
             }
 
@@ -85,7 +88,8 @@ namespace WindowMover
             {
                 isSettingsLoaded = true;
 
-                new Forms.SettingsForm().ShowDialog();
+                Settings.Instance.SetSettingsChanged(false);
+                new Forms.SettingsForm(windowManager, windowHandlerManager).ShowDialog();
 
                 isSettingsLoaded = false;
             }

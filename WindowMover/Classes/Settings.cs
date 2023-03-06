@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowMover.Classes
 {
@@ -23,19 +19,60 @@ namespace WindowMover.Classes
         private bool settingsChanged { get; set; }
 
         private System.Drawing.Point windowSettingsLocation = new System.Drawing.Point();
-        public System.Drawing.Point WindowSettingsLocation { get { return windowSettingsLocation; } set { windowSettingsLocation = value; settingsChanged = true; } }
+        public System.Drawing.Point WindowSettingsLocation
+        {
+            get { return windowSettingsLocation; }
+            set
+            {
+                if (value != windowSettingsLocation)
+                {
+                    windowSettingsLocation = value; settingsChanged = true;
+                }
+            }
+        }
 
         private System.Drawing.Size windowSettingsSize = new System.Drawing.Size();
-        public System.Drawing.Size WindowSettingsSize { get { return windowSettingsSize; } set { windowSettingsSize = value; settingsChanged = true; } }
+        public System.Drawing.Size WindowSettingsSize
+        {
+            get { return windowSettingsSize; }
+            set
+            {
+                if (value != windowSettingsSize) { windowSettingsSize = value; settingsChanged = true; }
+            }
+        }
 
         private int timerFullscreenDetectionTimeout;
-        public int TimerFullscreenDetectionTimeout { get { return timerFullscreenDetectionTimeout; } set { timerFullscreenDetectionTimeout = value; settingsChanged = true; } }
+        public int TimerFullscreenDetectionTimeout
+        {
+            get { return timerFullscreenDetectionTimeout; }
+            set
+            {
+                if (value != timerFullscreenDetectionTimeout)
+                {
+                    timerFullscreenDetectionTimeout = value; settingsChanged = true;
+                }
+            }
+        }
 
         private int timerSetPositionTimeout;
-        public int TimerSetPositionTimeout { get { return timerSetPositionTimeout; } set { timerSetPositionTimeout = value; settingsChanged = true; } }
+        public int TimerSetPositionTimeout
+        {
+            get { return timerSetPositionTimeout; }
+            set
+            {
+                if (value != timerSetPositionTimeout) { timerSetPositionTimeout = value; settingsChanged = true; }
+            }
+        }
 
         private bool positioning;
-        public bool Positioning { get { return positioning; } set { positioning = value; settingsChanged = true; } }
+        public bool Positioning
+        {
+            get { return positioning; }
+            set
+            {
+                if (value != positioning) { positioning = value; settingsChanged = true; }
+            }
+        }
 
         private Settings()
         {
@@ -70,7 +107,12 @@ namespace WindowMover.Classes
             return true;
         }
 
-        public bool SettingsChanged()
+        public void SetSettingsChanged(bool settingsChanged)
+        {
+            this.settingsChanged = settingsChanged;
+        }
+
+        public bool GetSettingsChanged()
         {
             return this.settingsChanged;
         }

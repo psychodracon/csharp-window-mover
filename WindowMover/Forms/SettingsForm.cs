@@ -15,8 +15,14 @@ namespace WindowMover.Forms
 {
     public partial class SettingsForm : Form
     {
-        public SettingsForm()
+        private WindowManager windowManager;
+        private WindowHandlerManager windowHandlerManager;
+
+        public SettingsForm(WindowManager windowManager, WindowHandlerManager windowHandlerManager)
         {
+            this.windowManager = windowManager;
+            this.windowHandlerManager = windowHandlerManager;
+
             InitializeComponent();
             
             this.nudSetPositions.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "TimerSetPositionTimeout", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
@@ -28,7 +34,7 @@ namespace WindowMover.Forms
             dgVHandlers.AllowDrop = false;
             dgVHandlers.MultiSelect = false;
             dgVHandlers.AutoGenerateColumns = false;
-            dgVHandlers.DataSource = Classes.Managers.WindowHandlerManager.windowHandlers;
+            dgVHandlers.DataSource = windowHandlerManager.GetWindowHandlers();
 
             dgVHandlers.AllowUserToResizeColumns = false;
             dgVHandlers.AllowUserToOrderColumns = false;
@@ -46,7 +52,7 @@ namespace WindowMover.Forms
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            new Forms.WindowHandlerForm("Dodaj zaczep", Classes.EditorMode.New, null).ShowDialog();
+            new Forms.WindowHandlerForm(windowManager, windowHandlerManager, "Dodaj zaczep", Classes.EditorMode.New, null).ShowDialog();
 
             RefreshAndSave();
         }
@@ -55,7 +61,7 @@ namespace WindowMover.Forms
         {
             if (dgVHandlers.CurrentRow != null)
             {
-                new Forms.WindowHandlerForm("Edytuj zaczep", Classes.EditorMode.Edit, (Classes.WindowHandler)dgVHandlers.CurrentRow.DataBoundItem).ShowDialog();
+                new Forms.WindowHandlerForm(windowManager, windowHandlerManager, "Edytuj zaczep", Classes.EditorMode.Edit, (Classes.WindowHandler)dgVHandlers.CurrentRow.DataBoundItem).ShowDialog();
 
                 RefreshAndSave();
             }
@@ -74,7 +80,7 @@ namespace WindowMover.Forms
             {
                 if (dgVHandlers.CurrentRow != null)
                 {
-                    Classes.Managers.WindowHandlerManager.Remove((Classes.WindowHandler)dgVHandlers.CurrentRow.DataBoundItem);
+                    windowHandlerManager.Remove((Classes.WindowHandler)dgVHandlers.CurrentRow.DataBoundItem);
                     RefreshAndSave();
                 }
             }
@@ -83,20 +89,19 @@ namespace WindowMover.Forms
         private void RefreshAndSave()
         {
             dgVHandlers.DataSource = null;
-            dgVHandlers.DataSource = Classes.Managers.WindowHandlerManager.windowHandlers;
+            dgVHandlers.DataSource = windowHandlerManager.GetWindowHandlers();
 
-            Classes.Managers.WindowHandlerManager.Save();
+            windowHandlerManager.Save();
         }
 
         private void btnSetPosition_Click(object sender, EventArgs e)
         {
-            Classes.Managers.WindowManager.GetAllOpenedWindows();
-            Classes.Managers.WindowHandlerManager.SetPositions();
+            windowHandlerManager.SetPositions(windowManager);
         }
 
         private void SettingsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (Settings.Instance.SettingsChanged())
+            if (Settings.Instance.GetSettingsChanged())
             {
                 if (MessageBox.Show("Ustawienia zostały zmienione, czy zapamiętać?", "Dracon`s Utils", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
@@ -125,11 +130,12 @@ namespace WindowMover.Forms
         private void btnSaveSettings_Click(object sender, EventArgs e)
         {
             Settings.Instance.Save();
+            Settings.Instance.SetSettingsChanged(false);
         }
 
         private void dgVHandlers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            WindowHandlerManager.Save();
+            windowHandlerManager.Save();
         }
     }
 }

@@ -1,48 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace WindowMover.Classes.Managers
 {
-    using Properties;
-    using System.Diagnostics;
-    using System.Drawing;
-    using System.Windows.Forms;
-    using HWND = IntPtr;
-
-    public static class TimerManager
+    public class TimerManager
     {
-        private static Timer setWindowPositionTimer = new Timer();
+        private Timer setWindowPositionTimer = new Timer();
+        private WindowManager windowManager;
+        private WindowHandlerManager windowHandlerManager;
 
-        public static void Init()
+        BackgroundWorker worker = new BackgroundWorker();
+        public TimerManager(WindowManager windowManager, WindowHandlerManager windowHandlerManager)
         {
+            this.windowManager = windowManager;
+            this.windowHandlerManager = windowHandlerManager;
 
-        }
-        public static void Mock()
-        {
-
-        }
-
-        static TimerManager()
-        {
+            worker.DoWork += new DoWorkEventHandler(SetWindowPostionTimer_DoWork);
             setWindowPositionTimer.Tick += SetWindowPositionTimer_Tick;
-
             if (Settings.Instance.Positioning)
             {
-                TimerManager.EnableSetWindowPositionTimer();
+                EnableSetWindowPositionTimer();
             }
         }
 
-        public static void RestartSetWindowPositionTimer()
+        public void RestartSetWindowPositionTimer()
         {
             DisableSetWindowPositionTimer();
             EnableSetWindowPositionTimer();
         }
 
-        public static void EnableSetWindowPositionTimer()
+        public void EnableSetWindowPositionTimer()
         {
             if (Settings.Instance.TimerSetPositionTimeout > 0)
                 setWindowPositionTimer.Interval = Settings.Instance.TimerSetPositionTimeout;
@@ -53,7 +41,7 @@ namespace WindowMover.Classes.Managers
             setWindowPositionTimer.Start();
         }
 
-        public static void DisableSetWindowPositionTimer()
+        public void DisableSetWindowPositionTimer()
         {
             setWindowPositionTimer.Enabled = false;
             setWindowPositionTimer.Dispose();
@@ -61,13 +49,18 @@ namespace WindowMover.Classes.Managers
             setWindowPositionTimer.Enabled = false;
         }
 
-        private static void SetWindowPositionTimer_Tick(object sender, EventArgs e)
+        private void SetWindowPositionTimer_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("PositioningTimer Tick");
+            if (!worker.IsBusy)
+                worker.RunWorkerAsync();
+        }
+
+        private void SetWindowPostionTimer_DoWork(object sender, EventArgs e)
+        {
             try
             {
-                Classes.Managers.WindowManager.GetAllOpenedWindows();
-                Classes.Managers.WindowHandlerManager.SetPositions();
+                windowManager.GetAllProcesses();
+                windowHandlerManager.SetPositions(windowManager);
             }
             catch (Exception exp)
             {

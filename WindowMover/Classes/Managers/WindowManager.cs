@@ -11,16 +11,28 @@ namespace WindowMover.Classes.Managers
     using System.Drawing;
     using HWND = IntPtr;
 
-    public static class WindowManager
+    public class WindowManager
     {
-        public static List<Window> openedWindows = WindowManager.GetOpenedWindows();
+        private List<Window> openedWindows = new List<Window>();
+        private Process[] processes;
 
-        public static void GetAllOpenedWindows()
+        public WindowManager()
         {
-            openedWindows = GetOpenedWindows();
+            GetAllProcesses();
         }
 
-        private static List<Window> GetOpenedWindows()
+        public Process[] GetAllProcesses()
+        {
+            return processes = Process.GetProcesses();
+        }
+        public List<Window> GetAllOpenedWindows()
+        {
+            openedWindows = GetOpenedWindows();
+
+            return openedWindows;
+        }
+
+        private List<Window> GetOpenedWindows()
         {
             HWND shellWindow = WinApiWrapper.GetShellWindow();
             List<Window> windows = new List<Window>();
@@ -40,7 +52,7 @@ namespace WindowMover.Classes.Managers
             return windows;
         }
 
-        public static Window GetWindowInfo(HWND hWnd)
+        public Window GetWindowInfo(HWND hWnd)
         {
             Window window = new Window();
 
@@ -79,7 +91,7 @@ namespace WindowMover.Classes.Managers
             return window;
         }
 
-        public static string GetCaptionOfWindow(IntPtr hwnd)
+        public string GetCaptionOfWindow(IntPtr hwnd)
         {
             string caption = "";
             StringBuilder windowText = null;
@@ -103,7 +115,7 @@ namespace WindowMover.Classes.Managers
             return caption;
         }
 
-        public static string GetClassNameOfWindow(IntPtr hwnd)
+        public string GetClassNameOfWindow(IntPtr hwnd)
         {
             string className = "";
             StringBuilder classText = null;
@@ -127,26 +139,23 @@ namespace WindowMover.Classes.Managers
             return className;
         }
 
-        public static string GetProcessPathOfWindow(HWND hwnd)
+        public string GetProcessPathOfWindow(HWND hwnd)
         {
-            string processFileName = String.Empty;
+            String processFileName = String.Empty;
 
             try
             {
                 uint pid = 0;
                 WinApiWrapper.GetWindowThreadProcessId(hwnd, out pid);
-                Process proc = Process.GetProcessById((int)pid);
+                Process proc = processes.Where(x => x.Id == pid).First();
                 processFileName = proc.MainModule.FileName.ToString();
             }
-            catch
-            {
-                
-            }
+            catch (Exception e) { }
 
             return processFileName;
         }
 
-        public static Rectangle GetWindowRect(HWND hWnd)
+        public Rectangle GetWindowRect(HWND hWnd)
         {
             Debug.Assert(hWnd != HWND.Zero);
             WinApiWrapper.RECT rect = new WinApiWrapper.RECT();
@@ -155,35 +164,65 @@ namespace WindowMover.Classes.Managers
             return rect.ToRectangle();
         }
 
-        public static bool MoveWindowByHandle(HWND hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint)
+        public bool MoveWindowByHandle(HWND hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             return WinApiWrapper.MoveWindow(hWnd, X, Y, nWidth, nHeight, bRepaint);
         }
 
-        public static bool MoveWindowByWindowClass(Window window, int X, int Y, int nWidth, int nHeight, bool bRepaint)
+        public bool MoveWindowByWindowClass(Window window, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             return MoveWindowByHandle(window.windowHandle, X, Y, nWidth, nHeight, bRepaint);
         }
 
-        public static long SetWindowLongPtr(Window window, int index, long replacementValue)
+        public long SetWindowLongPtr(Window window, int index, long replacementValue)
         {
             return WinApiWrapper.SetWindowLongPtr(window.windowHandle, index, replacementValue);
         }
 
-        public static long GetWindowLongPtr(Window window, int index)
+        public long GetWindowLongPtr(Window window, int index)
         {
             return WinApiWrapper.GetWindowLongPtr(window.windowHandle, index);
         }
 
-        public static bool SetWindowPos(Window window, int zOrder, uint flags)
+        public bool SetWindowPos(Window window, int zOrder, uint flags)
         {
             return WinApiWrapper.SetWindowPos(window.windowHandle, zOrder, window.positionX, window.positionY, window.sizeX, window.sizeY, flags);
         }
 
-        public static bool IsWindowTopMost(Window window)
+        public bool IsWindowTopMost(Window window)
         {
             long windowExtStyle = GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE);
             return (windowExtStyle & (int)WinApiEnums.WindowExtStyle.WS_EX_TOPMOST) == (int)WinApiEnums.WindowExtStyle.WS_EX_TOPMOST;
+        }
+
+        public HWND GetForegroundWindow()
+        {
+            return WinApiWrapper.GetForegroundWindow();
+        }
+
+        public HWND SetWinEventHook(int eventMin, int eventMax, IntPtr hmodWinEventProc, WinApiWrapper.WinEventProc lpfnWinEventProc, int idProcess, int idThread, WinApiEnums.WinEvents dwflags)
+        {
+            return WinApiWrapper.SetWinEventHook(eventMin, eventMax, hmodWinEventProc, lpfnWinEventProc, idProcess, idThread, dwflags);
+        }
+
+        public int UnhookWinEvent(IntPtr hWinEventHook)
+        {
+            return WinApiWrapper.UnhookWinEvent(hWinEventHook);
+        }
+
+        public int GetLastError()
+        {
+            return WinApiWrapper.GetLastError();
+        }
+
+        public IntPtr SetWindowsHookEx(WinApiEnums.Hooks idHook, WinApiWrapper.HookProc lpfn, IntPtr hMod, uint dwThreadId)
+        {
+            return WinApiWrapper.SetWindowsHookEx((int)idHook, lpfn, hMod, dwThreadId);
+        }
+
+        public int CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            return WinApiWrapper.CallNextHookEx(hhk, nCode, wParam, lParam);
         }
     }
 }

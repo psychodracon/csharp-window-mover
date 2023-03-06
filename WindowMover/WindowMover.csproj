@@ -125,7 +125,8 @@
   <ItemGroup>
     <Compile Include="Classes\Dictionaries.cs" />
     <Compile Include="Classes\Enums.cs" />
-    <Compile Include="Classes\Helpers.cs" />
+    <Compile Include="Classes\Helper.cs" />
+    <Compile Include="Classes\Managers\AutomationManager.cs" />
     <Compile Include="Classes\Managers\TimerManager.cs" />
     <Compile Include="Classes\Settings.cs" />
     <Compile Include="Classes\Wrappers\Enums\WinApiEnums.cs" />

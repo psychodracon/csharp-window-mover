@@ -11,12 +11,17 @@ namespace WindowMover
     class ProcessIcon : IDisposable
     {
         NotifyIcon notifyIcon;
+        TimerManager timerManager;
+        WindowManager windowManager;
+        WindowHandlerManager windowHandlerManager;
 
-        public ProcessIcon()
+        public ProcessIcon(WindowManager windowManager, WindowHandlerManager windowHandlerManager, TimerManager timerManager)
         {
+            this.windowManager = windowManager;
+            this.windowHandlerManager = windowHandlerManager;
+            this.timerManager = timerManager;
+
             notifyIcon = new NotifyIcon();
-            Settings.Instance.Load();
-            TimerManager.Mock();
         }
 
         public void Display()
@@ -25,7 +30,7 @@ namespace WindowMover
             notifyIcon.Text = "Window Mover";
             notifyIcon.Visible = true;
 
-            notifyIcon.ContextMenuStrip = new ContextMenus().Create();
+            notifyIcon.ContextMenuStrip = new ContextMenus(windowManager, windowHandlerManager, timerManager).Create();
         }
 
         public void Dispose()

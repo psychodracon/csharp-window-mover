@@ -2,25 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WinApiEnums = WindowMover.Classes.Wrappers.Enums;
 
 namespace WindowMover.Classes.Managers
 {
-    using System.Windows.Forms;
-    using HWND = IntPtr;
 
-    public static class WindowHandlerManager
+    public class WindowHandlerManager
     {
-        public static List<WindowHandler> windowHandlers = new List<WindowHandler>();
+        private List<WindowHandler> windowHandlers = new List<WindowHandler>();
+        private List<Window> topMostWindows = new List<Window>();
 
-        static WindowHandlerManager()
+        public WindowHandlerManager()
         {
             Load();
         }
 
-        public static string Add(WindowHandler handler)
+        public string Add(WindowHandler handler)
         {
             WindowHandler existing = windowHandlers.Where(x => x.handlerName == handler.handlerName).FirstOrDefault();
             if (existing != null)
@@ -31,7 +28,7 @@ namespace WindowMover.Classes.Managers
             return String.Empty;
         }
 
-        public static string Remove(WindowHandler handler)
+        public string Remove(WindowHandler handler)
         {
             WindowHandler existing = windowHandlers.Where(x => x.handlerName == handler.handlerName).FirstOrDefault();
             if (existing != null)
@@ -41,7 +38,7 @@ namespace WindowMover.Classes.Managers
         }
 
 
-        public static bool Save()
+        public bool Save()
         {
             string currentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
@@ -51,7 +48,7 @@ namespace WindowMover.Classes.Managers
             return done;
         }
 
-        public static bool Load()
+        public bool Load()
         {
             string currentDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
@@ -64,7 +61,28 @@ namespace WindowMover.Classes.Managers
             return true;
         }
 
-        public static List<Window> GetHandleByCriteria(WindowHandler windowHandler)
+        public List<WindowHandler> GetWindowHandlers()
+        {
+            return windowHandlers;
+        }
+
+        public List<WindowHandler> ByteArrayToWindowHandler(byte[] dane)
+        {
+            List<WindowHandler> windowHandlers = new List<WindowHandler>();
+
+            windowHandlers = (List<WindowHandler>)Helpers.ByteArrayToObject(dane);
+
+            return windowHandlers;
+        }
+
+        public byte[] WindowHandlersToByteArray(List<WindowHandler> windowhandlers)
+        {
+            byte[] data = Helpers.ObjectToByteArray(windowhandlers);
+
+            return data;
+        }
+
+        public List<Window> GetWindowByWindowHandler(WindowHandler windowHandler, List<Window> openedWindows)
         {
             List<Window> windows = new List<Window>();
 
@@ -72,27 +90,27 @@ namespace WindowMover.Classes.Managers
             {
                 case WindowCompareTemplate.Match:
                     if (!windowHandler.useWindowClass)
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower())).ToList();
                     else
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().Equals(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
                     break;
                 case WindowCompareTemplate.BeginWith:
                     if (!windowHandler.useWindowClass)
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().StartsWith(windowHandler.windowTitle.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().StartsWith(windowHandler.windowTitle.ToLower())).ToList();
                     else
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().StartsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().StartsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
                     break;
                 case WindowCompareTemplate.EndWith:
                     if (!windowHandler.useWindowClass)
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower())).ToList();
                     else
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().EndsWith(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
                     break;
                 case WindowCompareTemplate.Contains:
                     if (!windowHandler.useWindowClass)
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Contains(windowHandler.windowTitle.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().Contains(windowHandler.windowTitle.ToLower())).ToList();
                     else
-                        windows = WindowManager.openedWindows.Where(x => x.windowCaption.ToLower().Contains(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
+                        windows = openedWindows.Where(x => x.windowCaption.ToLower().Contains(windowHandler.windowTitle.ToLower()) && x.windowClass.ToLower().Equals(windowHandler.windowClass.ToLower())).ToList();
                     break;
                 default:
                     break;
@@ -143,76 +161,85 @@ namespace WindowMover.Classes.Managers
             return windows;
         }
 
-        public static void SetPositions()
+        private void SetWindowZOrder(WindowManager windowManager, Window window, WinApiEnums.InsertAfter insertAfter)
         {
-            foreach (var handler in Classes.Managers.WindowHandlerManager.windowHandlers.Where(x => x.handlerActive == true).ToList())
+            windowManager.SetWindowPos(window, (int)insertAfter, (uint)WinApiEnums.WindowSPFlags.SWP_FRAMECHANGED |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOMOVE |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOSIZE |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOACTIVATE
+                            );
+            if (!topMostWindows.Any(x => x.windowHandle.Equals(window.windowHandle)))
             {
-                List<Classes.Window> windows = new List<Classes.Window>();
+                topMostWindows.Add(window);
+            }
+        }
+        public void SetPositions(WindowManager windowManager)
+        {
+            foreach (var handler in windowHandlers.Where(x => x.handlerActive == true).ToList())
+            {
+                List<Window> windows = new List<Window>();
 
-                windows = Classes.Managers.WindowHandlerManager.GetHandleByCriteria(handler);
+                windows = GetWindowByWindowHandler(handler, windowManager.GetAllOpenedWindows());
 
                 foreach (var window in windows)
                 {
-                    Console.WriteLine(window.windowCaption);
-
-                    if (handler.lastHandle == IntPtr.Zero || (handler.lastHandle != IntPtr.Zero && handler.lastHandle != window.windowHandle))
+                    IntPtr foregroundWindow = windowManager.GetForegroundWindow();
+                    if (foregroundWindow == window.windowHandle && handler.alwaysOnTop && !windowManager.IsWindowTopMost(window))
                     {
-                        if (handler.alwaysOnTop && !WindowManager.IsWindowTopMost(window))
-                        {
-                            WindowManager.SetWindowPos(window, (int)WinApiEnums.InsertAfter.HWND_TOPMOST, (uint)WinApiEnums.WindowSPFlags.SWP_FRAMECHANGED |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOMOVE |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOSIZE
-                                );
-                        }
-                        if (handler.borderless)
-                        {
-                            long currentStyle = WindowManager.GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_STYLE);
-                            currentStyle &= ~((long)WinApiEnums.WindowStyle.WS_CAPTION |
-                                (long)WinApiEnums.WindowStyle.WS_THICKFRAME |
-                                (long)WinApiEnums.WindowStyle.WS_MINIMIZE |
-                                (long)WinApiEnums.WindowStyle.WS_MAXIMIZE |
-                                (long)WinApiEnums.WindowStyle.WS_SYSMENU
-                            );
-                            WindowManager.SetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_STYLE, currentStyle);
-
-                            long currentExtStyle = WindowManager.GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE);
-                            currentExtStyle &= ~((long)WinApiEnums.WindowExtStyle.WS_EX_DLGMODALFRAME |
-                                (long)WinApiEnums.WindowExtStyle.WS_EX_CLIENTEDGE |
-                                (long)WinApiEnums.WindowExtStyle.WS_EX_STATICEDGE);
-                            WindowManager.SetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE, currentExtStyle);
-
-                            WindowManager.SetWindowPos(window, 0, (uint)WinApiEnums.WindowSPFlags.SWP_FRAMECHANGED |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOMOVE |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOSIZE |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOZORDER |
-                                (uint)WinApiEnums.WindowSPFlags.SWP_NOOWNERZORDER
-                                );
-                        }
-                        handler.lastHandle = window.windowHandle;
+                        SetWindowZOrder(windowManager, window, WinApiEnums.InsertAfter.HWND_TOPMOST);
                     }
+                    if (handler.borderless)
+                    {
+                        long currentStyle = windowManager.GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_STYLE);
+                        currentStyle &= ~((long)WinApiEnums.WindowStyle.WS_CAPTION |
+                            (long)WinApiEnums.WindowStyle.WS_THICKFRAME |
+                            (long)WinApiEnums.WindowStyle.WS_MINIMIZE |
+                            (long)WinApiEnums.WindowStyle.WS_MAXIMIZE |
+                            (long)WinApiEnums.WindowStyle.WS_SYSMENU
+                        );
+                        windowManager.SetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_STYLE, currentStyle);
+
+                        long currentExtStyle = windowManager.GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE);
+                        currentExtStyle &= ~((long)WinApiEnums.WindowExtStyle.WS_EX_DLGMODALFRAME |
+                            (long)WinApiEnums.WindowExtStyle.WS_EX_CLIENTEDGE |
+                            (long)WinApiEnums.WindowExtStyle.WS_EX_STATICEDGE);
+                        windowManager.SetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE, currentExtStyle);
+
+                        windowManager.SetWindowPos(window, 0, (uint)WinApiEnums.WindowSPFlags.SWP_FRAMECHANGED |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOMOVE |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOSIZE |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOZORDER |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOOWNERZORDER |
+                            (uint)WinApiEnums.WindowSPFlags.SWP_NOACTIVATE
+                            );
+                    }
+
                     if (!handler.changePosition && !handler.changeSize)
                     {
                         return;
                     }
                     else if (handler.changePosition && !handler.changeSize)
                     {
-                        WindowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, window.sizeX, window.sizeY, true);
+                        windowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, window.sizeX, window.sizeY, true);
                     }
                     else if (!handler.changePosition && handler.changeSize)
                     {
-                        WindowManager.MoveWindowByWindowClass(window, window.positionX, window.positionY, handler.sizeX, handler.sizeY, true);
+                        windowManager.MoveWindowByWindowClass(window, window.positionX, window.positionY, handler.sizeX, handler.sizeY, true);
                     }
                     else if (handler.changePosition && handler.changeSize)
                     {
-                        WindowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, handler.sizeX, handler.sizeY, true);
+                        windowManager.MoveWindowByWindowClass(window, handler.positionX, handler.positionY, handler.sizeX, handler.sizeY, true);
                     }
                 }
             }
         }
 
-        public static void SetPosition(Window window)
+        public void RemoveTopMostStyleFromWindows(WindowManager windowManager)
         {
-
+            foreach (Window window in topMostWindows)
+            {
+                SetWindowZOrder(windowManager, window, WinApiEnums.InsertAfter.HWND_NOTOPMOST);
+            }
         }
     }
 }

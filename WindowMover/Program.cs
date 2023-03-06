@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using WindowMover.Classes;
 using WindowMover.Classes.Managers;
 
 namespace WindowMover
@@ -15,7 +16,16 @@ namespace WindowMover
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            using (ProcessIcon processIcon = new ProcessIcon())
+            Settings.Instance.Load();
+
+            WindowManager windowManager = new WindowManager();
+            WindowHandlerManager windowHandlerManager = new WindowHandlerManager();
+            AutomationManager automationManager = new AutomationManager(windowManager, windowHandlerManager);
+            TimerManager timerManager = new TimerManager(windowManager, windowHandlerManager);
+
+            automationManager.SubscribeToEvents();
+
+            using (ProcessIcon processIcon = new ProcessIcon(windowManager, windowHandlerManager, timerManager))
             {
 #if DEBUG
                 AllocConsole();

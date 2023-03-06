@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WindowMover.Classes
 {
-    static class Dictionaries
+    public static class Dictionaries
     {
         public static Dictionary<string, WindowCompareTemplate> windowCompareTemplateDictionary = new Dictionary<string, WindowCompareTemplate>();
 

@@ -262,7 +262,7 @@
             this.tlpOthers.Name = "tlpOthers";
             this.tlpOthers.Padding = new System.Windows.Forms.Padding(0, 0, 92, 0);
             this.tlpOthers.RowCount = 4;
-            this.tlpOthers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
+            this.tlpOthers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this.tlpOthers.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpOthers.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tlpOthers.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -279,7 +279,7 @@
             this.gbTimers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbTimers.Location = new System.Drawing.Point(3, 3);
             this.gbTimers.Name = "gbTimers";
-            this.gbTimers.Size = new System.Drawing.Size(534, 76);
+            this.gbTimers.Size = new System.Drawing.Size(534, 49);
             this.gbTimers.TabIndex = 0;
             this.gbTimers.TabStop = false;
             this.gbTimers.Text = "Ustawienia minutników";

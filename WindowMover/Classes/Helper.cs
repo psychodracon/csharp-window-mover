@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WindowMover.Classes
 {
@@ -88,22 +84,6 @@ namespace WindowMover.Classes
             }
 
             return null;
-        }
-
-        public static List<Classes.WindowHandler> ByteArrayToWindowHandler(byte[] dane)
-        {
-            List<Classes.WindowHandler> windowHandlers = new List<Classes.WindowHandler>();
-
-            windowHandlers = (List<Classes.WindowHandler>)Helpers.ByteArrayToObject(dane);
-
-            return windowHandlers;
-        }
-
-        public static byte[] WindowHandlersToByteArray(List<Classes.WindowHandler> windowhandlers)
-        {
-            byte[] data = Helpers.ObjectToByteArray(windowhandlers);
-
-            return data;
         }
 
         public static void CopyProperties(this WindowHandler source, WindowHandler destination)
