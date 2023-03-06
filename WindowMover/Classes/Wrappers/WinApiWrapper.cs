@@ -51,32 +51,6 @@ namespace WindowMover.Classes
             }
         }
 
-        public enum GetWindow_Cmd : uint
-        {
-            GW_HWNDFIRST = 0,
-            GW_HWNDLAST = 1,
-            GW_HWNDNEXT = 2,
-            GW_HWNDPREV = 3,
-            GW_OWNER = 4,
-            GW_CHILD = 5,
-            GW_ENABLEDPOPUP = 6
-        }
-
-        public enum ShellEvents : int
-        {
-            HSHELL_WINDOWCREATED = 1,
-            HSHELL_WINDOWDESTROYED = 2,
-            HSHELL_ACTIVATESHELLWINDOW = 3,
-            HSHELL_WINDOWACTIVATED = 4,
-            HSHELL_GETMINRECT = 5,
-            HSHELL_REDRAW = 6,
-            HSHELL_TASKMAN = 7,
-            HSHELL_LANGUAGE = 8,
-            HSHELL_ACCESSIBILITYSTATE = 11,
-            HSHELL_APPCOMMAND = 12,
-            HSHELL_RUDEAPPACTIVATED = 32772
-        }
-
         public delegate bool EnumWindowsProc(HWND hWnd, int lParam);
 
         [DllImport("USER32.DLL")]
@@ -145,12 +119,15 @@ namespace WindowMover.Classes
         public static extern bool ScreenToClient(HWND handle, ref Point point);
 
         [DllImport("USER32.DLL")]
-        public static extern int RegisterWindowMessage(string lpString);
+        public static extern long GetWindowLongPtr(HWND hWnd, int nIndex);
 
         [DllImport("USER32.DLL")]
-        public static extern int RegisterShellHookWindow(IntPtr hWnd);
+        public static extern long SetWindowLongPtr(HWND hWnd, int nIndex, long dwNewLong);
 
         [DllImport("USER32.DLL")]
-        public static extern int DeregisterShellHookWindow(IntPtr hWnd);
+        public static extern bool SetWindowPos(HWND hWnd, int hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        [DllImport("USER32.DLL")]
+        public static extern IntPtr GetActiveWindow();
     }
 }

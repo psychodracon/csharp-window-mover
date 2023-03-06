@@ -17,11 +17,8 @@ namespace WindowMover
 
         bool isPositioningChecked = true;
 
-        SystemProcessHookForm systemProcessHookForm;
-
-        public ContextMenus(SystemProcessHookForm systemProcessHookForm)
+        public ContextMenus()
         {
-            this.systemProcessHookForm = systemProcessHookForm;
         }
 
         private ToolStripMenuItem positioningItem;
@@ -64,46 +61,21 @@ namespace WindowMover
             return menu;
         }
 
-        private void SetPositioningItemState(bool state)
-        {
-            positioningItem.Checked = state;
-            isPositioningChecked = state;
-
-            Settings.Instance.Positioning = state;
-
-            Settings.Instance.Save();
-        }
-
         void Positioning_Click(object sender, EventArgs e)
         {
             isPositioningChecked = (sender as ToolStripMenuItem).Checked;
 
             if (isPositioningChecked)
             {
-                if (Settings.Instance.UseTimerToSetPositions)
-                {
-                    TimerManager.EnableSetWindowPositionTimer();
-                }
-                else
-                {
-                    systemProcessHookForm = new SystemProcessHookForm();
-                    systemProcessHookForm.WindowEvent += (localSender, data) => Console.WriteLine(data);
-                }
+                TimerManager.EnableSetWindowPositionTimer();
             }
             if (!isPositioningChecked)
             {
-                if (Settings.Instance.UseTimerToSetPositions)
-                {
-                    TimerManager.DisableSetWindowPositionTimer();
-                }
-                else
-                {
-                    systemProcessHookForm.Dispose();
-                }
+                TimerManager.DisableSetWindowPositionTimer();
+
             }
 
             Settings.Instance.Positioning = ((sender as ToolStripMenuItem).Checked);
-
             Settings.Instance.Save();
         }
 

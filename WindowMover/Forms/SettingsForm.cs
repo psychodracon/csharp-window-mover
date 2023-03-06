@@ -20,7 +20,6 @@ namespace WindowMover.Forms
             InitializeComponent();
             
             this.nudSetPositions.DataBindings.Add(new System.Windows.Forms.Binding("Value", Settings.Instance, "TimerSetPositionTimeout", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUseTimer.DataBindings.Add(new System.Windows.Forms.Binding("Checked", Settings.Instance, "UseTimerToSetPositions", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.Location = Settings.Instance.WindowSettingsLocation;
             this.Size = Settings.Instance.WindowSettingsSize;
 

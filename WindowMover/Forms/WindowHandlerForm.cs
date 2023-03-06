@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowMover.Classes;
+using WinApiEnums = WindowMover.Classes.Wrappers.Enums;
 
 namespace WindowMover.Forms
 {
@@ -94,6 +95,9 @@ namespace WindowMover.Forms
             tbSizeX.DataBindings.Add(new Binding("Text", currentItem, "sizeX"));
             tbSizeY.DataBindings.Add(new Binding("Text", currentItem, "sizeY"));
 
+            chkAlwaysOnTop.DataBindings.Add(new Binding("Checked", currentItem, "alwaysOnTop"));
+            chkBorderless.DataBindings.Add(new Binding("Checked", currentItem, "borderless"));
+
             pictureBox.MouseDown += pictureBox_MouseDown;
             pictureBox.MouseUp += pictureBox_MouseUp;
             pictureBox.MouseMove += pictureBox_MouseMove;
@@ -121,8 +125,6 @@ namespace WindowMover.Forms
             this.Close();
         }
 
-        static Point p;
-   
         static void ShowInvertRectTracker(HWND window)
         {
             if (window != HWND.Zero)
@@ -172,7 +174,7 @@ namespace WindowMover.Forms
                 Rectangle rect = WindowManager.GetWindowRect(Window);
                 if (rect.Contains(point))
                     WindowList.Add(Window);
-                Window = WinApiWrapper.GetWindow(Window, (uint)WinApiWrapper.GetWindow_Cmd.GW_HWNDNEXT);
+                Window = WinApiWrapper.GetWindow(Window, (uint)WinApiEnums.Cmd.GW_HWNDNEXT);
             }
 
             int MinPixel = GetSystemMetrics((int)GetSystem_Metrics.SM_CXFULLSCREEN) * GetSystemMetrics((int)GetSystem_Metrics.SM_CYFULLSCREEN);

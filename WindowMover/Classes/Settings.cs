@@ -37,8 +37,6 @@ namespace WindowMover.Classes
         private bool positioning;
         public bool Positioning { get { return positioning; } set { positioning = value; settingsChanged = true; } }
 
-        private bool useTimerToSetPositions;
-        public bool UseTimerToSetPositions { get { return useTimerToSetPositions; } set { useTimerToSetPositions = value; settingsChanged = true; } }
         private Settings()
         {
             this.windowSettingsLocation = new System.Drawing.Point(0, 0);

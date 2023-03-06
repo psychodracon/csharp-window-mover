@@ -66,6 +66,8 @@
             this.lblPositionSpacer = new System.Windows.Forms.Label();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.chkAlwaysOnTop = new System.Windows.Forms.CheckBox();
+            this.chkBorderless = new System.Windows.Forms.CheckBox();
             this.gbHandler.SuspendLayout();
             this.gbAttributes.SuspendLayout();
             this.gbParent.SuspendLayout();
@@ -360,6 +362,8 @@
             // 
             // gbValues
             // 
+            this.gbValues.Controls.Add(this.chkBorderless);
+            this.gbValues.Controls.Add(this.chkAlwaysOnTop);
             this.gbValues.Controls.Add(this.lblSizeSpacer);
             this.gbValues.Controls.Add(this.lblPositionSpacer);
             this.gbValues.Controls.Add(this.tbPositionX);
@@ -411,6 +415,26 @@
             this.imageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
             this.imageList.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // chkAlwaysOnTop
+            // 
+            this.chkAlwaysOnTop.AutoSize = true;
+            this.chkAlwaysOnTop.Location = new System.Drawing.Point(337, 22);
+            this.chkAlwaysOnTop.Name = "chkAlwaysOnTop";
+            this.chkAlwaysOnTop.Size = new System.Drawing.Size(123, 17);
+            this.chkAlwaysOnTop.TabIndex = 12;
+            this.chkAlwaysOnTop.Text = "Zawsze na wierzchu";
+            this.chkAlwaysOnTop.UseVisualStyleBackColor = true;
+            // 
+            // chkBorderless
+            // 
+            this.chkBorderless.AutoSize = true;
+            this.chkBorderless.Location = new System.Drawing.Point(337, 48);
+            this.chkBorderless.Name = "chkBorderless";
+            this.chkBorderless.Size = new System.Drawing.Size(117, 17);
+            this.chkBorderless.TabIndex = 13;
+            this.chkBorderless.Text = "Usuń obramowanie";
+            this.chkBorderless.UseVisualStyleBackColor = true;
             // 
             // WindowHandlerForm
             // 
@@ -480,5 +504,7 @@
         private System.Windows.Forms.TextBox tbProcessName;
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ImageList imageList;
+        private System.Windows.Forms.CheckBox chkBorderless;
+        private System.Windows.Forms.CheckBox chkAlwaysOnTop;
     }
 }

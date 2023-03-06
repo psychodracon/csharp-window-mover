@@ -37,8 +37,10 @@ namespace WindowMover.Classes
         public bool changeSize { get; set; }
         public int sizeX { get; set; }
         public int sizeY { get; set; }
+        public bool alwaysOnTop { get; set; }
+        public bool borderless { get; set; }
 
-
+        public IntPtr lastHandle { get; set; }
         public WindowHandler()
         {
             handlerActive = true;

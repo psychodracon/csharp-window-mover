@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinApiEnums = WindowMover.Classes.Wrappers.Enums;
 
 namespace WindowMover.Classes.Managers
 {
@@ -162,6 +163,27 @@ namespace WindowMover.Classes.Managers
         public static bool MoveWindowByWindowClass(Window window, int X, int Y, int nWidth, int nHeight, bool bRepaint)
         {
             return MoveWindowByHandle(window.windowHandle, X, Y, nWidth, nHeight, bRepaint);
-        }     
+        }
+
+        public static long SetWindowLongPtr(Window window, int index, long replacementValue)
+        {
+            return WinApiWrapper.SetWindowLongPtr(window.windowHandle, index, replacementValue);
+        }
+
+        public static long GetWindowLongPtr(Window window, int index)
+        {
+            return WinApiWrapper.GetWindowLongPtr(window.windowHandle, index);
+        }
+
+        public static bool SetWindowPos(Window window, int zOrder, uint flags)
+        {
+            return WinApiWrapper.SetWindowPos(window.windowHandle, zOrder, window.positionX, window.positionY, window.sizeX, window.sizeY, flags);
+        }
+
+        public static bool IsWindowTopMost(Window window)
+        {
+            long windowExtStyle = GetWindowLongPtr(window, (int)WinApiEnums.Index.GWL_EXSTYLE);
+            return (windowExtStyle & (int)WinApiEnums.WindowExtStyle.WS_EX_TOPMOST) == (int)WinApiEnums.WindowExtStyle.WS_EX_TOPMOST;
+        }
     }
 }

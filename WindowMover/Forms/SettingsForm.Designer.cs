@@ -51,7 +51,6 @@
             this.lblSetPositionsMs = new System.Windows.Forms.Label();
             this.nudSetPositions = new System.Windows.Forms.NumericUpDown();
             this.lblSetPositions = new System.Windows.Forms.Label();
-            this.chkUseTimer = new System.Windows.Forms.CheckBox();
             this.tlpHandlerList.SuspendLayout();
             this.tlpList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgVHandlers)).BeginInit();
@@ -274,7 +273,6 @@
             // 
             this.gbTimers.AutoSize = true;
             this.gbTimers.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.gbTimers.Controls.Add(this.chkUseTimer);
             this.gbTimers.Controls.Add(this.lblSetPositionsMs);
             this.gbTimers.Controls.Add(this.nudSetPositions);
             this.gbTimers.Controls.Add(this.lblSetPositions);
@@ -289,7 +287,7 @@
             // lblSetPositionsMs
             // 
             this.lblSetPositionsMs.AutoSize = true;
-            this.lblSetPositionsMs.Location = new System.Drawing.Point(397, 45);
+            this.lblSetPositionsMs.Location = new System.Drawing.Point(397, 19);
             this.lblSetPositionsMs.Name = "lblSetPositionsMs";
             this.lblSetPositionsMs.Size = new System.Drawing.Size(20, 13);
             this.lblSetPositionsMs.TabIndex = 5;
@@ -297,7 +295,7 @@
             // 
             // nudSetPositions
             // 
-            this.nudSetPositions.Location = new System.Drawing.Point(271, 43);
+            this.nudSetPositions.Location = new System.Drawing.Point(271, 17);
             this.nudSetPositions.Maximum = new decimal(new int[] {
             60000,
             0,
@@ -320,21 +318,11 @@
             // lblSetPositions
             // 
             this.lblSetPositions.AutoSize = true;
-            this.lblSetPositions.Location = new System.Drawing.Point(6, 45);
+            this.lblSetPositions.Location = new System.Drawing.Point(6, 19);
             this.lblSetPositions.Name = "lblSetPositions";
             this.lblSetPositions.Size = new System.Drawing.Size(200, 13);
             this.lblSetPositions.TabIndex = 1;
             this.lblSetPositions.Text = "Częstotliwość przywracania pozycji okien";
-            // 
-            // chkUseTimer
-            // 
-            this.chkUseTimer.AutoSize = true;
-            this.chkUseTimer.Location = new System.Drawing.Point(9, 19);
-            this.chkUseTimer.Name = "chkUseTimer";
-            this.chkUseTimer.Size = new System.Drawing.Size(252, 17);
-            this.chkUseTimer.TabIndex = 19;
-            this.chkUseTimer.Text = "Używaj minutnika do przywracania pozycji okien";
-            this.chkUseTimer.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -391,6 +379,5 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn clActive;
         private System.Windows.Forms.DataGridViewTextBoxColumn clName;
         private System.Windows.Forms.TableLayoutPanel tlpOthersButtons;
-        private System.Windows.Forms.CheckBox chkUseTimer;
     }
 }
